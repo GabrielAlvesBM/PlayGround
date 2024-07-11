@@ -1,5 +1,6 @@
+
 import './App.css';
-import Lista from './components/Lista';
+
 
 function App() {
 
@@ -19,6 +20,18 @@ function App() {
       />*/}
        {/*<Form /> */}
        {/* <Lista itens={marcas} /> */}
+       {/*
+       <Router>
+       <Nav />
+
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/contato" element={<Contato />} />
+          <Route path="/faq" element={<FAQ />} />
+        </Routes>
+       </Router> */}
+
+
     </div>
   );
 }
