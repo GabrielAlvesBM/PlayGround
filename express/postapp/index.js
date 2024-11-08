@@ -42,6 +42,15 @@ app.post('/add', (req, res) => {
     });
 });
 
+app.get('/delete/:id', (req, res) => {
+    Post.destroy({where: {id: req.params.id}})
+    .then(() => {
+        res.send('Deletado com Sucesso!');
+    }).catch((error) => {
+        res.send('Houve um erro' + error)
+    })
+});
+
 app.listen(8000, () => {
     console.log('Servidor rodando na porta 8000!');
 });
