@@ -1,6 +1,11 @@
 const express = require('express');
 const app = express();
-const handlebars = require('express-handlebars').create({ defaultLayout: 'main' });
+const handlebars = require('express-handlebars').create({ 
+    defaultLayout: 'main',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true
+    } 
+});
 const bodyParser = require('body-parser');
 
 const Post = require('./models/Post');
@@ -15,7 +20,11 @@ const Post = require('./models/Post');
         app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.render('home');
+    Post.findAll().then((posts) => {
+        res.render('home', { posts: posts });
+    }).catch((error) => {
+        res.send('Houve um erro: ' + error);
+    });
 });
 
 app.get('/cad', (req, res) => {
