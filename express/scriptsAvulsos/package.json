@@ -1,0 +1,11 @@
+{
+  "name": "scriptsavulsos",
+  "version": "1.0.0",
+  "description": "Varios scripts express, avulsos e (na maioria) independentes um do outro",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Alves",
+  "license": "ISC"
+}
