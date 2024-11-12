@@ -16,7 +16,6 @@ app.engine('handlebars', handlebars.engine({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
 // Rotas
-
 app.use('/admin', admin);
 
 const PORT = 8080;
