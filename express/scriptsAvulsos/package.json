@@ -1,11 +1,15 @@
 {
   "name": "scriptsavulsos",
   "version": "1.0.0",
-  "description": "Varios scripts express, avulsos e (na maioria) independentes um do outro",
+  "description": "Varios scripts avulsos que funcionam (na maioria) independente um dos outros",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gabriel Alves",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongoose": "^8.8.1"
+  }
 }
