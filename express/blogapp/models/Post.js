@@ -25,8 +25,8 @@ const Post = new Schema({
     },
     date: {
         type: Date,
-        default: Data.now()
+        default: Date.now()
     }
 });
 
-mongoose.model('post', Post);
+mongoose.model('posts', Post);

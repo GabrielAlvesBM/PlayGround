@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 require('../models/Category');
-const Category = mongoose.model('categories')
+require('../models/Post');
+const Category = mongoose.model('categories');
+const Post = mongoose.model('posts');
+
 
 router.get('/', (req, res) => {
     res.render('admin/index');
@@ -23,7 +26,7 @@ router.get('/categories/add', (req, res) => {
 });
 
 router.post('/categories/new', (req, res) => {
-    let errors = []
+    let errors = [];
 
     if (!req.body.name || typeof req.body.name == undefined || req.body.name == null ) {
         errors.push({ text: 'Nome Invalido' });
@@ -114,6 +117,35 @@ router.get('/posts/add', (req, res) => {
         req.flash('error_msg', 'Houve um erro ao carregar o formulario');
         res.redirect('/admin/posts');
     });
+});
+
+router.post('/posts/new', (req, res) => {
+    let errors = [];
+
+    if (req.body.category === '0') {
+        errors.push({ text: 'Categoria Invalida, registre uma categoria' })
+    };
+
+    if (errors.length > 0) {
+        res.render('admin/addposts', {errors: errors});
+    } else {
+        const newPost = {
+            title: req.body.title,
+            description: req.body.description,
+            content: req.body.content,
+            category: req.body.category,
+            slug: req.body.slug
+        };
+
+        new Post(newPost).save().then(() => {
+            req.flash('success_msg', 'Postagem criada com sucesso!');
+            res.redirect('/admin/posts');
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Houve um erro ao cadastrar a postagem');
+            res.redirect('/admin/posts');
+        });
+    };
 });
 
 module.exports = router;
