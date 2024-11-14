@@ -106,16 +106,22 @@ router.post('/categories/delete', (req, res) => {
 });
 
 router.get('/posts', (req, res) => {
-    res.render('admin/posts');
+    Post.find().populate('category').sort({ date:'desc' }).then((posts) => {
+        res.render('admin/posts', { posts: posts }); 
+    })
+    .catch((error) => {
+        req.flash('error_msg', 'Houve um erro ao listar as postagens: ' + error);
+        res.redirect('/admin');
+    });
 });
 
 router.get('/posts/add', (req, res) => {
     Category.find().then((category) => {
         res.render('admin/addposts', { category: category });
     })
-    .catch(() => {
+    .catch((error) => {
         req.flash('error_msg', 'Houve um erro ao carregar o formulario');
-        res.redirect('/admin/posts');
+        res.redirect('/admin');
     });
 });
 
