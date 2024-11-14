@@ -65,4 +65,36 @@ router.post('/categories/new', (req, res) => {
     }
 });
 
+router.get('/categories/edit/:id', (req, res) => {
+    Category.findOne({ _id: req.params.id }).then((category) => {
+        res.render('admin/editcategories', { category: category });
+    })
+    .catch(() => {
+        req.flash('error_msg', 'Essa categoria não existe');
+        res.redirect('/admin/categories');
+    })
+});
+
+router.post('/categories/edit', (req, res) => {
+    Category.findOne({ _id: req.body.id }).then((category) => {
+        category.name = req.body.name;
+        category.slug = req.body.slug;
+
+        category.save().then(() => {
+            req.flash('success_msg', 'Categoria editada com sucesso!');
+            res.redirect('/admin/categories');
+        })
+        .catch((error) => {
+            req.flash('error_msg', 'Houve um erro interno ao salvar a edição da categoria');
+            res.redirect('/admin/categories');
+        })
+    })
+    .catch(() => {
+        req.flash('error_msg', 'Houve um erro ao editar categoria');
+        res.redirect('/admin/categories');
+    });
+
+
+});
+
 module.exports = router;
