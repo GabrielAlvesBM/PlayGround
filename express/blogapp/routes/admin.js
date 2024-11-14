@@ -13,7 +13,13 @@ router.get('/posts', (req, res) => {
 });
 
 router.get('/categories', (req, res) => {
-    res.render('admin/categories');
+    Category.find().sort({ date: 'desc' }).then((categories) => {
+        res.render('admin/categories', { categories: categories });
+    })
+    .catch(() => {
+        res.flash('error_msg', 'Houve um erro ao listar as categorias');
+        res.redirect('/admin');
+    }) 
 });
 
 router.get('/categories/add', (req, res) => {
@@ -51,7 +57,8 @@ router.post('/categories/new', (req, res) => {
             console.log('Categoria salva com sucesso!');
             req.flash('success_msg', 'Categoria criada com sucesso!');
             res.redirect('/admin/categories');
-        }).catch((error) => {
+        })
+        .catch((error) => {
             req.flash('error_msg', 'Houve um erro ao salvar a categoria, tente novamente!')
             res.redirect('/admin');
         })

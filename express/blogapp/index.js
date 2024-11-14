@@ -25,10 +25,19 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.engine('handlebars', handlebars.engine({ defaultLayout: 'main' }));
+app.engine(
+  "handlebars",
+  handlebars.engine({
+    defaultLayout: "main",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
+  })
+);
 app.set('view engine', 'handlebars');
-mongoose.Promise = global.Promise;
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/blogapp').then(() => {
     console.log('Mongodb Conectado!');
 }).catch((error) => {
