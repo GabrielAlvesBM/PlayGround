@@ -8,10 +8,6 @@ router.get('/', (req, res) => {
     res.render('admin/index');
 });
 
-router.get('/posts', (req, res) => {
-    res.send('Página Admin/Posts');
-});
-
 router.get('/categories', (req, res) => {
     Category.find().sort({ date: 'desc' }).then((categories) => {
         res.render('admin/categories', { categories: categories });
@@ -103,6 +99,20 @@ router.post('/categories/delete', (req, res) => {
     .catch(() => {
         req.flash('error_msg', 'Houve um erro ao deletar a categoria');
         res.redirect('/admin/categories');
+    });
+});
+
+router.get('/posts', (req, res) => {
+    res.render('admin/posts');
+});
+
+router.get('/posts/add', (req, res) => {
+    Category.find().then((category) => {
+        res.render('admin/addposts', { category: category });
+    })
+    .catch(() => {
+        req.flash('error_msg', 'Houve um erro ao carregar o formulario');
+        res.redirect('/admin/posts');
     });
 });
 
