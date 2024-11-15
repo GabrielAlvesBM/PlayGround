@@ -40,7 +40,8 @@ app.set('view engine', 'handlebars');
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/blogapp').then(() => {
     console.log('Mongodb Conectado!');
-}).catch((error) => {
+})
+.catch((error) => {
     console.error('Erro ao conectar no mongodb: ' + error);
 })
 

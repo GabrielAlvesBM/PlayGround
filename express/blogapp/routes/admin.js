@@ -154,4 +154,44 @@ router.post('/posts/new', (req, res) => {
     };
 });
 
+router.get('/posts/edit/:id', (req, res) => {
+    Post.findOne({ _id: req.params.id }).then((post) => {
+        Category.find().then((category) => {
+        res.render('admin/editposts', { category: category, post: post });
+        })
+        .catch(() => {
+            req.flash('error_msg', 'Houve um erro ao listar as categorias');
+            res.redirect('/posts')
+        });
+    })
+    .catch(() => {
+        req.flash('error_msg' ,'Houve um erro ao carregar o formulário de edição');
+        res.redirect('/posts')
+    })
+});
+
+router.post('/posts/edit', (req, res) => {
+    Post.findOne({ _id: req.body.id }).then((post) => {
+        post.title = req.body.title;
+        post.slug = req.body.slug;
+        post.description = req.body.description;
+        post.content = req.body.content;
+        post.category = req.body.category;
+
+        post.save().then(() => {
+            req.flash('success_msg', 'Postagem editada com sucesso!');
+            res.redirect('/admin/posts');
+        })
+        .catch((error) => {
+            console.log(error);
+            req.flash('error_msg', 'Erro interno');
+            res.redirect('/admin/posts');
+        })
+    })
+    .catch(() => {
+        req.flash('error_msg', 'Houve um erro ao salvar a edição');
+        res.redirect('/admin/posts')
+    });
+});
+
 module.exports = router;
