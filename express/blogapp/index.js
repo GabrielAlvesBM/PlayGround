@@ -9,6 +9,9 @@ const flash = require('connect-flash');
 
 const admin = require('./routes/admin');
 
+require('./models/Post');
+const Post = mongoose.model('posts');
+
 app.use(session({
     secret: 'Secret Secreta porra!',
     resave: true,
@@ -48,7 +51,21 @@ mongoose.connect('mongodb://localhost/blogapp').then(() => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
+app.get('/', (req, res) => {
+  Post.find().populate('category').sort({ date: 'desc' }).then((posts) => {
+    res.render('index', { posts: posts });
+  })
+  .catch(() => {
+    req.flash('error_msg', 'Houve um erro interno');
+    res.redirect('/404');
+  });
+});
+
 app.use('/admin', admin);
+
+app.get('/404', (req, res) => {
+  res.send('Erro 404!');
+});
 
 const PORT = 8080;
 app.listen(PORT, () => {
