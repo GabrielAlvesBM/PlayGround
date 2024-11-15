@@ -6,7 +6,6 @@
       </div>
     </div>
 
-s
 <h2>Postagens Recentes:</h2>
 
 {{#each posts}}
@@ -15,6 +14,11 @@ s
     <div class="card-body">
       <h3>{{ title }}</h3>
       <p>{{ description }}</p>
+      <a href="/post/{{ slug }}"><button class="btn btn-success">Leia mais</button></a>
+      <hr>
+      <small>{{ category.name }}</small>
+      <br>
+      <small>Data de Publicação: {{ date }}</small>
     </div>
   </div>
 

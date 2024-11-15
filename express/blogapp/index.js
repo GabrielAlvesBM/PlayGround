@@ -61,6 +61,21 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/post/:slug', (req, res) => {
+  Post.findOne({ slug: req.params.slug }).then((post) => {
+    if (!post) {
+      req.flash('error_msg', 'Essa postagem não existe');
+      req.redirect('/');
+    };
+    
+    res.render('post/index', { post: post });
+  })
+  .catch(() => {
+    req.flash('error_msg', 'Houve um erro interno');
+    res.redirect('/');
+  });
+});
+
 app.use('/admin', admin);
 
 app.get('/404', (req, res) => {
