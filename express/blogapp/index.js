@@ -10,7 +10,9 @@ const flash = require('connect-flash');
 const admin = require('./routes/admin');
 
 require('./models/Post');
+require('./models/Category');
 const Post = mongoose.model('posts');
+const Category = mongoose.model('categories');
 
 app.use(session({
     secret: 'Secret Secreta porra!',
@@ -73,6 +75,37 @@ app.get('/post/:slug', (req, res) => {
   .catch(() => {
     req.flash('error_msg', 'Houve um erro interno');
     res.redirect('/');
+  });
+});
+
+app.get('/categories', (req, res) => {
+  Category.find().then((category) => {
+    res.render('categories/index', { categories: category });
+  })
+  .catch(() => {
+    req.flash('error_msg', 'Houve um erro interno ao listar as categorias');
+    res.redirect('/')
+  });
+});
+
+app.get('/categories/:slug', (req, res) => {
+  Category.findOne({ slug: req.params.slug }).then((category) => {
+    if (!category) {
+      req.flash('error_msg', 'Está categoria não existe');
+      res.redirect('/categories');
+    };
+    
+    Post.find({ category: category._id }).then((post) => {
+      res.render('categories/posts', { posts: post, categories: category })
+    })
+    .catch(() => {
+      req.flash('error_msg', 'Houve um erro ao listar os posts!');
+      res.redirect('/categories');
+    });
+  })
+  .catch(() => {
+    req.flash('error_msg', 'Houve um erro interno ao carregar a página desta categoria');
+    res.redirect('/categories');
   });
 });
 
