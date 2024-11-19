@@ -8,6 +8,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 
 const admin = require('./routes/admin');
+const users = require('./routes/user');
 
 require('./models/Post');
 require('./models/Category');
@@ -110,6 +111,7 @@ app.get('/categories/:slug', (req, res) => {
 });
 
 app.use('/admin', admin);
+app.use('/users', users);
 
 app.get('/404', (req, res) => {
   res.send('Erro 404!');
