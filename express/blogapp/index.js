@@ -6,6 +6,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+require('./config/auth')(passport);
 
 const admin = require('./routes/admin');
 const users = require('./routes/user');
@@ -20,6 +22,10 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(flash());
 
 app.use((req, res, next) => {
