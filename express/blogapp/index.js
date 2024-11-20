@@ -8,6 +8,8 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 require('./config/auth')(passport);
+const db = require('./config/db');
+require('dotenv').config();
 
 const admin = require('./routes/admin');
 const users = require('./routes/user');
@@ -52,7 +54,7 @@ app.engine(
 app.set('view engine', 'handlebars');
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/blogapp').then(() => {
+mongoose.connect(db.mongoURI).then(() => {
     console.log('Mongodb Conectado!');
 })
 .catch((error) => {
@@ -125,7 +127,7 @@ app.get('/404', (req, res) => {
   res.send('Erro 404!');
 });
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log('Servidor Rodando!');
 });
