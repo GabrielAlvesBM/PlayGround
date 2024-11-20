@@ -63,7 +63,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rotas
 app.get('/', (req, res) => {
-  Post.find().populate('category').sort({ date: 'desc' }).then((posts) => {
+  Post.find().populate('category').sort({ date: 'asc' }).then((posts) => {
     res.render('index', { posts: posts });
   })
   .catch(() => {
