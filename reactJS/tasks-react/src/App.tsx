@@ -1,21 +1,38 @@
 import { useState } from 'react'
+import { useEffect } from 'react';
 import './App.css'
 
 function App() {
   const [tasks, setTasks] = useState<{task: string; checked: boolean}[]>([])
   const [taskInput, setTaskInput] = useState<string>('')
 
+  useEffect(() => {
+    const storedTasks = localStorage.getItem('tasks')
+
+    if (storedTasks) {
+      setTasks(JSON.parse(storedTasks))
+    }
+  }, [])
+
   function addTask () {
     if (taskInput.trim()) {
-      setTasks([...tasks, { task: taskInput, checked: false }])
+      const newTask = { task: taskInput, checked: false }
+      const updatedTasks = [...tasks, newTask]
+
+      setTasks(updatedTasks)
       setTaskInput('')
+
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks))
     }
   }
 
   function toggleChecked (index: number) {
-    setTasks(tasks.map((task, i) => 
+    const updatedTasks = tasks.map((task, i) => 
       i === index ? { ...task, checked: !task.checked } : task
-    ))
+    )
+
+    setTasks(updatedTasks)
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks))
   }
 
   return (
