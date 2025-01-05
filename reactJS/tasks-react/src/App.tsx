@@ -27,12 +27,19 @@ function App() {
   }
 
   function toggleChecked (index: number) {
-    const updatedTasks = tasks.map((task, i) => 
-      i === index ? { ...task, checked: !task.checked } : task
+    const updatedTasks = tasks.map((task, indexTask) => 
+      indexTask === index ? { ...task, checked: !task.checked } : task
     )
 
     setTasks(updatedTasks)
     localStorage.setItem('tasks', JSON.stringify(updatedTasks))
+  }
+
+  function deleteItem (index: number) {
+    const updateTasks = tasks.filter((_, indexTask) => indexTask !== index)
+    
+    setTasks(updateTasks)
+    localStorage.setItem('tasks', JSON.stringify(updateTasks))
   }
 
   return (
@@ -51,7 +58,12 @@ function App() {
               checked={task.checked}
               onChange={() => toggleChecked(index)}
             />
+
             {task.task}
+
+            <button
+              onClick={() => deleteItem(index)}
+            >Deletar</button>
           </li>
         ))}
       </ul>
