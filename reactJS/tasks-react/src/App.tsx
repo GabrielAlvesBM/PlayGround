@@ -2,14 +2,20 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-  const [tasks, setTasks] = useState<string[]>([])
+  const [tasks, setTasks] = useState<{task: string; checked: boolean}[]>([])
   const [taskInput, setTaskInput] = useState<string>('')
 
   function addTask () {
     if (taskInput.trim()) {
-      setTasks([...tasks, taskInput])
+      setTasks([...tasks, { task: taskInput, checked: false }])
       setTaskInput('')
     }
+  }
+
+  function toggleChecked (index: number) {
+    setTasks(tasks.map((task, i) => 
+      i === index ? { ...task, checked: !task.checked } : task
+    ))
   }
 
   return (
@@ -23,7 +29,13 @@ function App() {
       
       <ul className='task-list'>
         {tasks.map((task, index) => (
-          <li id={index.toString()} key={index}>{task}</li>
+          <li id={index.toString()} key={index}>
+            <input type="checkbox"
+              checked={task.checked}
+              onChange={() => toggleChecked(index)}
+            />
+            {task.task}
+          </li>
         ))}
       </ul>
     </>
