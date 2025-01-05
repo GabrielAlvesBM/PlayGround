@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 import './App.css'
 
+import trashIcon from './assets/trash.svg'
+
 function App() {
   const [tasks, setTasks] = useState<{task: string; checked: boolean}[]>([])
   const [taskInput, setTaskInput] = useState<string>('')
@@ -37,7 +39,7 @@ function App() {
 
   function deleteItem (index: number) {
     const updateTasks = tasks.filter((_, indexTask) => indexTask !== index)
-    
+
     setTasks(updateTasks)
     localStorage.setItem('tasks', JSON.stringify(updateTasks))
   }
@@ -45,7 +47,7 @@ function App() {
   return (
     <>
       <input className='task-input' type="text" name="taskInput" id='taskInput'
-        placeholder='Insira sua tarefa' autoComplete='off' value={taskInput}
+        placeholder='Insira sua tarefa' autoComplete='off' value={taskInput} maxLength={50}
         onChange={(event) => setTaskInput(event.target.value)}
         onKeyDown={(event) => {
           if (event.key == 'Enter') addTask()
@@ -54,16 +56,17 @@ function App() {
       <ul className='task-list'>
         {tasks.map((task, index) => (
           <li id={index.toString()} key={index}>
-            <input type="checkbox"
+            <input className='checkbox'
+              type="checkbox"
               checked={task.checked}
               onChange={() => toggleChecked(index)}
             />
 
-            {task.task}
+            <span className='checkbox'>{task.task}</span>
 
-            <button
+            <button className='delete-task'
               onClick={() => deleteItem(index)}
-            >Deletar</button>
+            ><img src={trashIcon} alt="Ícone de Lixeira" /></button>
           </li>
         ))}
       </ul>

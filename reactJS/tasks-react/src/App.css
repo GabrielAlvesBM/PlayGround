@@ -6,10 +6,12 @@
 }
 
 .task-input {
-  padding: 10px 15px;
+  padding: 10px 20px;
 
   border: none;
   border-radius: 999999px;
+
+  font-size: 1.1rem;
 }
 
 .task-list {
@@ -19,9 +21,64 @@
 }
 
 .task-list li {
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
 
-  background-color: #333;
+  margin-bottom: 7.5px;
+  padding: 10px 15px;
+
+  border-radius: 999999px;
+
+  background-color: #292929;
+}
+
+input[type="checkbox"] {
+  display: grid;
+  place-content: center;
+
+  width: 18px;
+  height: 18px;
+
+  margin: 0;
+
+  font: inherit;
+  color: greenyellow;
+  border: 1px solid #5e5e5e;
+
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em rgb(25, 221, 67);
+
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:checked + .checkbox {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.delete-task {
+  display: flex;
+
+  padding: 0;
+  border: none;
+
+  background: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
